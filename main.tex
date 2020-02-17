@@ -1,0 +1,223 @@
+% !TeX encoding = UTF-8
+% chktex-file 21 chktex-file -2 chktex-file 23 chktex-file 1 chktex-file 6
+\documentclass[11pt,a4paper,fleqn,headsepline]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{gensymb}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage[autostyle=true,german=quotes]{csquotes}
+\usepackage[pdftex,pdfa,hidelinks]{hyperref}
+\geometry{left=2cm,top=1.5cm,bottom=1cm,right=1cm}
+
+\begin{document}
+    \begin{multicols}{2}
+
+\renewcommand{\cleardoublepage}{}
+\renewcommand{\clearpage}{}
+
+        \section*{Routh-Hurwitz}
+        Form: \(a_0 s^n + a_1 s^{n-1} + \cdots + a_{n-2} s^2 + a_{n-1} s + a_n\)
+
+        Hurwitz-Matrix (Spalten- und Zeilenanzahl entspricht höchster Potenz):
+        \[\begin{bmatrix}
+            a_1 & a_3 & a_5 & \cdots \\
+            a_0 & a_2 & a_4 & \cdots \\
+            0 & a_1 & a_3 & \cdots \\
+            \vdots & \vdots & \vdots & \ddots \\
+        \end{bmatrix}\]
+
+        Jeder Schritt nach rechts: \(a_{n+2}\), jeder Schritt nach unten: \(a_{n-1}\)
+
+        System stabil wenn alle nordwestlichen Unterdeterminanten \(>0\):
+        \begin{align*}
+            H_1 &= \begin{vmatrix} a_1 \end{vmatrix} > 0 \\
+            H_2 &= \begin{vmatrix} a_1 & a_3 \\ a_0 & a_2 \end{vmatrix} > 0 \\
+            H_3 &= \begin{vmatrix} a_1 & a_3 & a_5 \\ a_0 & a_2 & a_4 \\ 0 & a_1 & a_3 \end{vmatrix} > 0 \\
+            \text{etc.}
+        \end{align*}
+
+        Beispiel: \(s^4+s^3+2s^2+2s+1\)
+
+        \(a_0 = 1; a_1 = 1; a_2 = 2; a_3 = 2; a_4 = 1\)
+
+        Hurwitz-Matrix:
+        \[\begin{bmatrix}
+            1 & 2 & 0 & 0 \\
+            1 & 2 & 1 & 0 \\
+            0 & 1 & 2 & 0 \\
+            0 & 1 & 2 & 1 \\
+        \end{bmatrix}\]
+
+        System stabil wenn alle nordwestlichen Unterdeterminanten \(>0\):
+        \begin{align*}
+            H_1 &= \begin{vmatrix} 1 \end{vmatrix} > 0 \\
+            H_2 &= \begin{vmatrix} 1 & 2 \\ 1 & 2 \end{vmatrix} = 0 \ngtr 0 \\
+            &\text{nicht stabil}
+        \end{align*}
+
+        \section*{Zustandsraumdarstellung}
+        \begin{align*}
+            \mathbf{A} \in \mathbb{R}^{n \times n} &= \begin{bmatrix}
+                a_{11} & a_{12} & \cdots \\
+                a_{21} & a_{22} & \cdots \\
+                \vdots & \vdots & \ddots \\
+            \end{bmatrix} \\
+            \mathbf{B} \in \mathbb{R}^{n \times 1} &= \begin{bmatrix}
+                b_1 \\ b_2 \\ \vdots
+            \end{bmatrix} \\
+            \mathbf{C} \in \mathbb{R}^{1 \times n} &= \begin{bmatrix}
+                c_1 & c_2 & \cdots
+            \end{bmatrix} \\
+            \dot{\mathbf{x}} &= \mathbf{A} \mathbf{x} + \mathbf{B} u \\
+            y &= \mathbf{C} \mathbf{x} \\
+        \end{align*}
+
+        Bestimmung von \(\mathbf{K}\): \(\left\lvert s\mathbf{I} - \mathbf{A} + \mathbf{B} \mathbf{K} \right\rvert = 0\)
+
+        \subsection*{Zustandsraumdarstellung in Übertragungsfunktion:}
+
+        \subsubsection*{Rosenbrockmatrix:}
+        \begin{align*}
+            G(s) &= \frac{\left|\mathbf{P}(s)\right|}{\left|s\mathbf{I} - \mathbf{A} \right|} \\
+            \mathbf{P}(s) &= \begin{bmatrix}
+                s\mathbf{I} - \mathbf{A} & \mathbf{B} \\
+                -\mathbf{C} & D
+            \end{bmatrix}
+        \end{align*}
+
+        \subsubsection*{Matrixinversion:}
+
+        \(G(s) = \det(\mathbf{C}{(s\mathbf{I} - \mathbf{A})}^{-1}\mathbf{B})+D\)
+
+        \section*{Regelungsnormalform}
+        \begin{align*}
+            G(s) &= \frac{b_1 s^{n-1} + \cdots + b_{n-2} s^2 + b_{n-1} s + b_n}{s^n + a_1 s^{n-1} + \cdots + a_{n-2} s^2 + a_{n-1} s + a_n} \\
+            \mathbf{A} &= \begin{bmatrix}
+                0 & 1 & 0 & \cdots & 0 \\
+                0 & 0 & 1 & \cdots & 0 \\
+                \vdots & \vdots & \vdots & \ddots & \vdots \\
+                0 & 0 & 0 & \cdots & 1 \\
+                -a_n & -a_{n-1} & -a_{n-2} & \cdots & -a_1
+            \end{bmatrix} \\
+            \mathbf{B} &= \begin{bmatrix}
+                0 \\ 0 \\ \vdots \\ 1
+            \end{bmatrix} \\
+            \mathbf{C} &= \begin{bmatrix}
+                b_n & b_{n-1} & \cdots & b_1
+            \end{bmatrix} \\
+            \dot{\mathbf{x}} &= \mathbf{A} \mathbf{x} + \mathbf{B} u \\
+            y &= \mathbf{C} \mathbf{x} \\
+        \end{align*}
+
+        \section*{Beobachtungsnormalform}
+
+        Wie Regelungsnormalform, nur \(\mathbf{A} = \mathbf{A}_{RNF}^T; \mathbf{B} = \mathbf{C}_{RNF}^T; \mathbf{C} = \mathbf{B}_{RNF}^T\)
+
+        \section*{Jordannormalform}
+
+        Polynom muss in Partialbrüchen vorliegen. Betrachtung jedes Terms einzeln.
+
+        \begin{itemize}
+            \item \(\pm \frac{b}{s+p}\): \(A_{c_i} = \begin{bmatrix}-p\end{bmatrix}\), \(B_{c_i} = \begin{bmatrix}1\end{bmatrix}\), \(C_{c_i} = \begin{bmatrix}\pm b\end{bmatrix}\)
+            \item \(\frac{b}{{(s-p)}^m}\): \(m\) Spalten und Zeilen
+            
+            \(A_{c_i} = \begin{bmatrix}
+                p & 1 & 0 & \cdots & 0 \\
+                0 & p & 1 & \cdots & 0 \\
+                \vdots & \vdots & \ddots & \ddots & \vdots \\
+                0 & 0 & 0 & \ddots & 1 \\
+                0 & 0 & 0 & \cdots & p \\
+            \end{bmatrix}\), \(B_{c_i} = \begin{bmatrix}0 \\ 0 \\ 0 \\ \vdots \\ 1\end{bmatrix}\),
+            
+            \(C_{c_i} = \begin{bmatrix}b & 0 & 0 & \cdots & 0\end{bmatrix}\)
+            \item \(\frac{b_1 s + b_2}{s^2 + a_1 s + a_2}\):  \(A_{c_i} = \begin{bmatrix}
+                0 & 1 \\
+                -a_2 & -a_1 \\
+            \end{bmatrix}\), \(B_{c_i} = \begin{bmatrix}0 \\ 1\end{bmatrix}\), \(C_{c_i} = \begin{bmatrix}b_2 & b_1\end{bmatrix}\)
+        \end{itemize}
+
+        Dann alles zusammenfügen:
+        \begin{align*}
+            A_d &= \begin{bmatrix}
+                A_{c_1} & 0 & \cdots & 0 \\
+                0 & A_{c_2} & \cdots & 0 \\
+                \vdots & \vdots & \ddots & \vdots \\
+                0 & 0 & \cdots & A_{c_n} \\
+            \end{bmatrix} \\
+            B_d &= \begin{bmatrix}
+                B_{c_1} \\ B_{c_2} \\ \vdots \\ B_{c_n}
+            \end{bmatrix} \\
+            C_d &= \begin{bmatrix}
+                C_{c_1} & C_{c_2} & \cdots & C_{c_n}
+            \end{bmatrix}
+        \end{align*}
+
+        \section*{Reglerauslegung}
+
+        Gleichung \(G(s) = \frac{b(s)}{a(s)}\) gleichsetzen: \(a(s) = s^2+2\zeta\omega_0 s + {\omega_0}^2\)
+
+        Anregelzeit \(t_r \approx \frac{1.8}{\omega_0}\)
+
+        \(\omega_d = \omega_0 \sqrt{1-\zeta^2}\)
+
+        Anstiegzeit \(t_p = \frac{\pi}{\omega_d}\)
+
+        Überschwingweite \(M_p = e^{-\frac{\pi\zeta}{\sqrt{1-\zeta^2}}}\)
+
+        Einschwingzeit \(t_{s,1\%} = \frac{-\ln(0.01)}{\zeta\omega_0}\)
+
+        Sprungantwort
+        \[y(t) = 1-e^{-\zeta\omega_0 t}\left(\cos(\omega_d t) + \frac{\zeta\omega_0}{\omega_d}\sin(\omega_d t)\right)\]
+
+        \section*{Folgeregelung}
+        \begin{align*}
+            \begin{bmatrix} A & B \\ C & D\end{bmatrix} \begin{bmatrix}N_x \\ N_u\end{bmatrix} &= \begin{bmatrix} b_1 \\ b_2 \end{bmatrix} \\
+                \mathbf{\bar{N}} &= N_u + K \mathbf{N_x} \\
+            u &= -\mathbf{K}\mathbf{x} + \mathbf{\bar{N}}r
+        \end{align*}
+
+        \section*{Bode-Diagramm}
+
+        Konstante: \(G(s)=K\frac{\dots\dots}{\dots\dots} \Rrightarrow \) Betrag: \(20 \log_{10}(K)\); Phase: \(\begin{cases}
+            0\degree & K > 0 \\
+            -180\degree & K < 0
+        \end{cases}\)
+
+        Pol im Ursprung: \(G(s) = \frac{\dots\dots}{s(\dots)}\) Betrag: \(-20 \frac{dB}{Dekade}\) um \(\omega = 1\); Phase: konstant -90\degree
+
+        Nullstelle im Ursprung: \(G(s) = \frac{s(\dots)}{\dots\dots}\) Betrag: \(+20 \frac{dB}{Dekade}\) um \(\omega = 1\); Phase: konstant +90\degree
+
+        reeller Pol: \(G(s) = \frac{\dots\dots}{(s+\omega_l)(\dots)}\) Betrag: \(-20 \frac{dB}{Dekade}\) ab \(\omega = \omega_l\); Phase: Pol links der imaginären Achse: Fall A, rechts der imaginären Achse Fall B
+
+        reelle Nullstelle: \(G(s) = \frac{(s+\omega_l)(\dots)}{\dots\dots}\) Betrag: \(+20 \frac{dB}{Dekade}\) ab \(\omega = \omega_l\); Phase: Nullstelle links der imaginären Achse: Fall B, rechts der imaginären Achse Fall A
+
+        Fall A: von 0\degree\ auf -90\degree\ linear von \(0.1\omega_l\) bis \(10\omega_l\)
+
+        Fall B: von 0\degree\ auf +90\degree\ linear von \(0.1\omega_l\) bis \(10\omega_l\)
+
+        Bei doppelten Null- und Polstellen Verdopplung von Betrag und Phase (40 statt 20 und 180 statt 90)
+
+        Summe aller Terme ergibt Gesamtlösung
+
+        \section*{Steuerbarkeit}
+
+        Regelungsnormalform, wenn die Steuerbarkeitsmatrix \(\det(\begin{bmatrix}
+        \mathbf{B} & \mathbf{A} \mathbf{B} & \mathbf{A}^2 \mathbf{B} & \cdots & \mathbf{A}^{n-1} \mathbf{B}\end{bmatrix}) \ne 0 \to\) System steuerbar (n ist Anzahl Zeilen von \(\mathbf{A}\))
+
+        \section*{Beobachtbarkeit}
+
+        Beobachtungsnormalform, wenn die Beobachtbarkeitsmatrix \(\det\left(\begin{bmatrix}
+        \mathbf{C} \\ \mathbf{C}\mathbf{A} \\ \mathbf{C}\mathbf{A}^2 \\ \vdots \\ \mathbf{C}\mathbf{A}^{n-1} \end{bmatrix}\right) \ne 0 \to\) System beobachtbar (n ist Anzahl Zeilen von \(\mathbf{A}\))
+
+        \section*{Beobachter}
+
+        Charakteristische Gleichung: \(\det(s\mathbf{I} - \mathbf{A} + \mathbf{L} \mathbf{C} )\)
+
+    \end{multicols}
+ 
+\end{document}          
